@@ -2,7 +2,8 @@
 
 main () {
   intro
-  get_wunderground_key
+  get_api_ai_config
+  get_imgur_api_key
   rotate_monitor
   improve_color
   font_antialiasing
@@ -19,9 +20,15 @@ intro() {
   echo $'\e[32mDaylight Kiosk Installation\e[39m'
 }
 
-get_wunderground_key () {
+get_api_ai_config () {
   echo
-  read -p $'\e[33mWhat\'s your Wunderground API Key? \e[39m' -r WUNDER_KEY
+  read -p $'\e[33mWhat\'s your api.ai API Key? \e[39m' -r API_AI_KEY
+  read -p $'\e[33mWhat\'s your api.ai API language setting? \e[39m' -r API_AI_LANG
+}
+
+get_imgur_api_key () {
+  echo
+  read -p $'\e[33mWhat\'s your Imgur API Key? \e[39m' -r IMGUR_CLIENTID
 }
 
 rotate_monitor() {
@@ -80,7 +87,7 @@ prevent_monitor_sleep() {
     echo "@xset s noexpose" >> ~/.config/lxsession/LXDE-pi/autostart
     echo "@xset dpms 0 0 0" >> ~/.config/lxsession/LXDE-pi/autostart
 
-    
+
     sudo sed -i 's/@xscreensaver/#@xscreensaver/' /etc/xdg/lxsession/LXDE/autostart
     sudo bash -c "echo 'xserver-command=X -s 0 dpms' >> /etc/lightdm/lightdm.conf"
   fi
@@ -98,7 +105,7 @@ install_chromium() {
 autostart_chromium() {
   echo
   echo "Setting Chromium to autostart..."
-  STARTUP_URL="https://danmconrad.github.io/daylight/?token=$WUNDER_KEY"
+  STARTUP_URL="http://localhost:3050/?API_AI_ACCESSTOKEN=$API_AI_KEY&LANG=$API_AI_LANG&IMGUR_CLIENTID=$IMGUR_CLIENTID"
 
   echo "@chromium-browser --start-fullscreen --disable-session-crashed-bubble --disable-infobars --kiosk $STARTUP_URL" >> ~/.config/lxsession/LXDE-pi/autostart
   echo "@unclutter -idle 0.1 -root" >> ~/.config/lxsession/LXDE-pi/autostart
