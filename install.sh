@@ -133,7 +133,7 @@ modify_cron() {
 
   sudo crontab -l > root-cron
   echo "0 6 * * * /usr/local/sbin/screen on 2> /usr/local/sbin/screen.err.log" >> root-cron
-  echo "0 11 * * * /usr/local/sbin/screen off 2> /usr/local/sbin/screen.err.log" >> root-cron
+  echo "0 0 * * * /usr/local/sbin/screen off 2> /usr/local/sbin/screen.err.log" >> root-cron
   echo "" >> root-cron
   sudo crontab root-cron
   rm root-cron
